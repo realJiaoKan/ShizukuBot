@@ -1,4 +1,3 @@
-import asyncio
 import os
 import math
 from typing import Optional, Dict, List
@@ -7,11 +6,11 @@ import aiohttp
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 from plugins.maimai.music import get_cover_len4_id, total_list
+from plugins.setting import *
 
 scoreRank = 'D C B BB BBB A AA AAA S S+ SS SS+ SSS SSS+'.split(' ')
 combo = ' FC FC+ AP AP+'.split(' ')
 diffs = 'Basic Advanced Expert Master Re:Master'.split(' ')
-abstract = True
 
 
 class ChartInfo(object):
@@ -97,7 +96,7 @@ class DrawBest(object):
         self.pic_dir = 'assets/maimai/pic/'
         self.abstract_dir = 'assets/maimai/abstract/'
         self.original_dir = 'assets/maimai/original/'
-        self.cover_dir = self.abstract_dir if abstract else self.original_dir
+        self.cover_dir = self.abstract_dir if getSetting('abstract') else self.original_dir
         self.img = Image.open(self.pic_dir + 'UI_TTR_BG_Base_Plus.png').convert('RGBA')
         self.ROWS_IMG = [2]
         for i in range(6):

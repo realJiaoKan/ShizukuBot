@@ -7,6 +7,7 @@ from nonebot.message import event_preprocessor
 from nonebot.typing import T_State
 
 from library.text2pic import *
+from plugins.setting import *
 
 
 # 不回复临时对话
@@ -56,11 +57,13 @@ async def _(bot: Bot, event: Event, state: T_State):
     最近记录 最近一次游玩记录
     最佳 <曲目> <难度> 单曲最佳表现
     b30 Best30
-中二节奏://等待开服中......
+中二节奏://就看华立啥时候上线记录查询了......
     [查歌]
     [信息]
     [查分]
-其它命令://开发中,v我50可以加速开发捏'''
+其它命令:
+    [设置]
+    abstract (true||false) 开启/关闭抽象画功能'''
     await help.send(Message([{
         "type": "image",
         "data": {
@@ -101,3 +104,18 @@ async def _(bot: Bot, event: Event, state: T_State):
         }
     }]))
     await poke.send(random.choice(saoSpeech))
+
+
+# abstract (true||false) 开启/关闭抽象画功能
+abstract_setter = on_command('abstract')
+
+
+@abstract_setter.handle()
+async def _(bot: Bot, event: Event, state: T_State):
+    argv = str(event.get_message()).strip().split(" ")
+    if len(argv) > 0 and argv[0] == 'false':
+        setSetting('abstract', False)
+        await poke.send('抽象画:' + str(getSetting('abstract')))
+    else:
+        setSetting('abstract', True)
+        await poke.send('抽象画:' + str(getSetting('abstract')))

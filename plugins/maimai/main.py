@@ -7,18 +7,18 @@ from nonebot.adapters.cqhttp import Message
 
 from library.text2pic import *
 from plugins.maimai.tool import hash
-from plugins.maimai.music import *
 from plugins.maimai.b40 import generate
 from plugins.maimai.b50 import generate50
 from plugins.maimai.progress import *
+from plugins.setting import *
 
 original_dir = 'assets/maimai/original/'
 abstract_dir = 'assets/maimai/abstract/'
-cover_dir = abstract_dir
 
 
 # 一些通用函数
 def song_txt(music: Music):
+    cover_dir = abstract_dir if getSetting('abstract') else original_dir
     return Message([
         {
             "type": "text",
@@ -188,6 +188,7 @@ maimai_query_chart = on_regex(r"^([绿黄红紫白]?)id([0-9]+)")
 
 @maimai_query_chart.handle()
 async def _(bot: Bot, event: Event, state: T_State):
+    cover_dir = abstract_dir if getSetting('abstract') else original_dir
     regex = "([绿黄红紫白]?)id([0-9]+)"
     groups = re.match(regex, str(event.get_message())).groups()
     level_labels = ['绿', '黄', '红', '紫', '白']
